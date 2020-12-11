@@ -25,6 +25,8 @@ public class Bar {
     }
 
     public void remediado(int id) throws InterruptedException {
+        //Intervalo antes da thread começar a beber.
+        //Apenas para mostrar que o requisito de que ninguém bebe sozinho está sendo atendido.
         Thread.sleep(100);
         mutex.acquire();
         print("Aluno #%d: tomou uma e está remediado", id);
@@ -54,9 +56,6 @@ public class Bar {
         }
     }
 
-    private void print(String text) {
-        System.out.println(text);
-    }
     private void print(String text, int id) {
         System.out.printf(text+"\n", id);
     }
