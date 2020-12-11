@@ -6,8 +6,16 @@ import java.util.concurrent.Semaphore;
 public class Main {
 
     private static final int N_ALUNOS = 20;
+
+    //Barreira reusável para rastrear quantas threads sobem a bordo do barco.
     private static ReusableBarrier barreira = new ReusableBarrier(4);
+
+    //Semáforo para limitar acesso a região crítica.
+    //Número de permissões é 1 porque apenas uma thread pode acessar pode vez.
     private static Semaphore mutex = new Semaphore(1);
+
+    //Semáforos para controlar o número de threads que podem passar.
+    //Número de permissões é 0 porque precisa esperar liberar acesos.
     private static Semaphore filaDeComputacao = new Semaphore(0);
     private static Semaphore filaDePsicologia = new Semaphore(0);
 
@@ -21,8 +29,9 @@ public class Main {
                 @Override
                 public void run() {
                     try {
-                        barco.embarcar(id, cursos.get(id<15 ? 1 : 0));
-                        barco.rema(id, cursos.get(id<15 ? 1 : 0));
+                        String curso = cursos.get(id<15 ? 1 : 0); //Uma forma de distribuir os cursos entre os alunos.
+                        barco.embarcar(id, curso);
+                        barco.rema(id, curso);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
